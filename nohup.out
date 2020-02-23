@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "back-end/for_shop/app.py", line 2, in <module>
+    from flask_cors import CORS
+ModuleNotFoundError: No module named 'flask_cors'
