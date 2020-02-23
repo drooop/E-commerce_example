@@ -15,16 +15,23 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-input
+            v-model="queryInfo.query"
             placeholder="请输入内容"
+            clearable
+            @clear="getUserList"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
+              @click="getUserList"
             />
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">
+          <el-button
+            type="primary"
+            @click="addDialogVisible = true"
+          >
             添加用户
           </el-button>
         </el-col>
@@ -62,6 +69,7 @@
           <template v-slot="scope">
             <el-switch
               v-model="scope.row.mg_state"
+              @change="userStateChanged(scope.row)"
             />
           </template>
         </el-table-column>
@@ -112,6 +120,57 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
+
+      <!-- 添加用户的对话框 -->
+      <el-dialog
+        title="添加用户"
+        :visible.sync="addDialogVisible"
+        width="50%"
+      >
+        <!-- 内容主体区域 -->
+        <el-form
+          ref="addFormRef"
+          :model="addForm"
+          :rules="addFormRules"
+          label-width="70px"
+        >
+          <el-form-item
+            label="用户名称"
+            prop="username"
+          >
+            <el-input v-model="addForm.username" />
+          </el-form-item>
+          <el-form-item
+            label="用户密码"
+            prop="password"
+          >
+            <el-input v-model="addForm.password" />
+          </el-form-item>
+          <el-form-item
+            label="邮箱地址"
+            prop="email"
+          >
+            <el-input v-model="addForm.email" />
+          </el-form-item>
+          <el-form-item
+            label="手机号码"
+            prop="mobile"
+          >
+            <el-input v-model="addForm.mobile" />
+          </el-form-item>
+        </el-form>
+        <!-- 底部区域 -->
+        <span
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button @click="addDialogVisible = false">取 消</el-button>
+          <el-button
+            type="primary"
+            @click="addDialogVisible = false"
+          >确 定</el-button>
+        </span>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -129,7 +188,45 @@ export default {
         pagesize: 1
       },
       userList: [],
-      total: 0
+      total: 0,
+      // 控制 添加用户对话框 的显示与否
+      addDialogVisible: false,
+      // 添加用户的表单数据
+      addForm: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
+      // 添加表单的验证规则对象
+      addFormRules: {
+        username: [
+          { require: true, message: '请输入用户名', trigger: 'blur' },
+          {
+            min: 3,
+            max: 10,
+            message: '用户名长度在 3 到 10 个字符',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          { require: true, message: '请输入密码', trigger: 'blur' },
+          {
+            min: 6,
+            max: 15,
+            message: '密码长度在 6 到 15 个字符',
+            trigger: 'blur'
+          }
+        ],
+        email: [
+          { require: true, message: '请输入邮箱', trigger: 'blur' }
+
+        ],
+        mobile: [
+          { require: true, message: '请输入手机号码', trigger: 'blur' }
+
+        ]
+      }
     }
   },
   created () {
@@ -156,6 +253,16 @@ export default {
       console.log(newPage)
       this.queryInfo.pagenum = newPage
       this.getUserList()
+    },
+    async userStateChanged (userinfo) {
+      console.log(userinfo)
+      const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
+      if (res.meta.state !== 200) {
+        userinfo.mg_state = !userinfo.mg_state
+        return this.$message.error('更新用户状态失败')
+      }
+      this.$message('更新用户状态成功')
+      console.log(res)
     }
   }
 }
