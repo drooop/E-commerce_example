@@ -5,6 +5,9 @@ import './plugins/element.js'
 // 导入全局样式表
 import './assets/css/global.css'
 
+// babel-polyfill 低版本兼容 axios请求
+import 'babel-polyfill'
+
 // axios劫持http配置
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8000/api/'
