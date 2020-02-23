@@ -6,7 +6,7 @@ import './plugins/element.js'
 import './assets/css/global.css'
 
 // babel-polyfill 低版本兼容 axios请求
-import 'babel-polyfill'
+// import 'babel-polyfill'
 
 // axios劫持http配置
 import axios from 'axios'
