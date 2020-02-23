@@ -2,3 +2,11 @@ Traceback (most recent call last):
   File "back-end/for_shop/app.py", line 2, in <module>
     from flask_cors import CORS
 ModuleNotFoundError: No module named 'flask_cors'
+WARNING:tornado.access:404 GET /css/chunk-vendors.7c2b730f.css (220.112.124.110) 0.64ms
+WARNING:tornado.access:404 GET /js/app.76391a5b.js (220.112.125.31) 0.53ms
+WARNING:tornado.access:404 GET /js/chunk-vendors.a20bce3a.js (220.112.125.31) 0.47ms
+WARNING:tornado.access:404 GET /js/app.76391a5b.js (220.112.125.31) 0.77ms
+WARNING:tornado.access:404 GET /css/chunk-vendors.7c2b730f.css (220.112.125.31) 0.86ms
+WARNING:tornado.access:404 GET /js/app.76391a5b.js (220.112.125.31) 0.50ms
+WARNING:tornado.access:404 GET /js/chunk-vendors.a20bce3a.js (220.112.124.110) 0.49ms
+WARNING:tornado.access:404 GET /js/app.76391a5b.js (220.112.124.110) 0.75ms
