@@ -8,8 +8,8 @@ class MainHandler(tornado.web.RequestHandler):
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
-        (r"/yhl", tornado.web.RedirectHandler, {"url": "/yhl/index.html"}),
-        (r"/yhl/", tornado.web.RedirectHandler, {"url": "/yhl/index.html"}),
+        (r"/yhl", tornado.web.RedirectHandler, {"url": "/shop/index.html"}),
+        (r"/yhl/", tornado.web.RedirectHandler, {"url": "/shop/index.html"}),
         (r"/yhl/(.*)", tornado.web.StaticFileHandler, {"path": "dist"}),
         (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": "dist/css"}),
         (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": "dist/js"}),
