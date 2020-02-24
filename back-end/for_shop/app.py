@@ -7,6 +7,8 @@ import json
 app = Flask(__name__)
 CORS(app)
 
+userIdBase: 408
+
 menuList = [
     {
         'id': 1,
@@ -224,9 +226,12 @@ def getMenu():
 
 @app.route('/api/users', methods=['GET', 'POST'])
 def getUsers():
+    global userIdBase
     if request.method == "POST":
         newUser = request.get_data().decode('utf-8')
         newUser = json.loads(newUser)
+        userIdBase += 1
+        newUser['id'] = userIdBase
         userList.append(newUser)
         response = {
             'data': {},
