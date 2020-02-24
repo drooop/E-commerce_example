@@ -7,7 +7,7 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-userIdBase: 408
+userIdBase = 408
 
 menuList = [
     {
@@ -233,6 +233,7 @@ def getUsers():
         userIdBase += 1
         newUser['id'] = userIdBase
         userList.append(newUser)
+        print(newUser)
         response = {
             'data': {},
             'meta': {
@@ -265,31 +266,15 @@ def getUserInfoById(uid):
             if uid == user['id']:
                 try:
                     print(userData)
-                    if userData.get('email'):
-                        user['email'] = userData.get('email')
-                        res = {
-                            'data': user,
-                            'meta': {
-                                'msg': '修改成功',
-                                'status': 200
-                            }
+                    user['email'] = userData.get('email')
+                    user['mobile'] = userData.get('mobile')
+                    res = {
+                        'data': user,
+                        'meta': {
+                            'msg': '修改成功',
+                            'status': 200
                         }
-                    elif userData.get('mobile'):
-                        user['mobile'] = userData.get('mobile')
-                        res = {
-                            'data': user,
-                            'meta': {
-                                'msg': '修改成功',
-                                'status': 200
-                            }
-                        }
-
-                    else:
-                        res = {'data': {},
-                               'meta': {
-                            'msg': '用户信息修改失败',
-                            'status': 400
-                        }}
+                    }
                     return json.dumps(res)
                 except Exception:
                     return json.dumps({'data': {},
