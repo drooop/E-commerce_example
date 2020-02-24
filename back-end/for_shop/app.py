@@ -100,7 +100,7 @@ userList = [
     {
         'id': 500,
         'role_name': "超级管理员",
-        'user_name': 'admin',
+        'username': 'admin',
         'create_time': '1486720211',
         'mobile': '13950068590',
         'email': 'linken@qq.com',
@@ -109,7 +109,7 @@ userList = [
     {
         'id': 400,
         'role_name': "测试角色0",
-        'user_name': 'linken0',
+        'username': 'linken0',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken0@qq.com',
@@ -118,7 +118,7 @@ userList = [
     {
         'id': 401,
         'role_name': "测试角色1",
-        'user_name': 'linken1',
+        'username': 'linken1',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken1@qq.com',
@@ -127,7 +127,7 @@ userList = [
     {
         'id': 402,
         'role_name': "测试角色2",
-        'user_name': 'linken2',
+        'username': 'linken2',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken2@qq.com',
@@ -136,7 +136,7 @@ userList = [
     {
         'id': 403,
         'role_name': "测试角色3",
-        'user_name': 'linken3',
+        'username': 'linken3',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken3@qq.com',
@@ -145,7 +145,7 @@ userList = [
     {
         'id': 404,
         'role_name': "测试角色4",
-        'user_name': 'linken4',
+        'username': 'linken4',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken4@qq.com',
@@ -154,7 +154,7 @@ userList = [
     {
         'id': 405,
         'role_name': "测试角色5",
-        'user_name': 'linken5',
+        'username': 'linken5',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken5@qq.com',
@@ -163,7 +163,7 @@ userList = [
     {
         'id': 406,
         'role_name': "测试角色6",
-        'user_name': 'linken6',
+        'username': 'linken6',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken6@qq.com',
@@ -172,7 +172,7 @@ userList = [
     {
         'id': 407,
         'role_name': "测试角色7",
-        'user_name': 'linken7',
+        'username': 'linken7',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken7@qq.com',
@@ -181,7 +181,7 @@ userList = [
     {
         'id': 408,
         'role_name': "测试角色8",
-        'user_name': 'linken8',
+        'username': 'linken8',
         'create_time': '1486720211',
         'mobile': '13950068591',
         'email': 'linken8@qq.com',
@@ -222,8 +222,20 @@ def getMenu():
     return json.dumps(menu)
 
 
-@app.route('/api/users', methods=['GET'])
+@app.route('/api/users', methods=['GET', 'POST'])
 def getUsers():
+    if request.method == "POST":
+        newUser = request.get_data().decode('utf-8')
+        newUser = json.loads(newUser)
+        userList.append(newUser)
+        response = {
+            'data': {},
+            'meta': {
+                'msg': 'new user added',
+                'status': 201
+            }
+        }
+        return json.dumps(response)
     testData = {
         'data': {
             'pagenum': 1,
@@ -238,6 +250,78 @@ def getUsers():
     return json.dumps(testData)
 
 
+@app.route('/api/users/<int:uid>', methods=['GET', 'PUT', 'DELETE'])
+def getUserInfoById(uid):
+    print(request.method)
+    if request.method == "PUT":
+        userData = request.get_data().decode('utf-8')
+        userData = json.loads(userData)
+        for user in userList:
+            if uid == user['id']:
+                try:
+                    print(userData)
+                    if userData.get('email'):
+                        user['email'] = userData.get('email')
+                        res = {
+                            'data': user,
+                            'meta': {
+                                'msg': '修改成功',
+                                'status': 200
+                            }
+                        }
+                    elif userData.get('mobile'):
+                        user['mobile'] = userData.get('mobile')
+                        res = {
+                            'data': user,
+                            'meta': {
+                                'msg': '修改成功',
+                                'status': 200
+                            }
+                        }
+
+                    else:
+                        res = {'data': {},
+                               'meta': {
+                            'msg': '用户信息修改失败',
+                            'status': 400
+                        }}
+                    return json.dumps(res)
+                except Exception:
+                    return json.dumps({'data': {},
+                                       'meta': {
+                        'msg': '用户信息修改失败',
+                        'status': 400
+                    }})
+    elif request.method == "GET":
+        for user in userList:
+            if uid == user['id']:
+                res = {
+                    'data': user,
+                    'meta': {
+                        'msg': '查询成功',
+                        'status': 200
+                    }
+                }
+                return json.dumps(res)
+    elif request.method == "DELETE":
+        for user in userList:
+            if uid == user['id']:
+                userList.remove(user)
+                res = {
+                    'data': None,
+                    'meta': {
+                        'msg': f'删除{uid}成功',
+                        'status': 200
+                    }
+                }
+                return json.dumps(res)
+    return json.dumps({'data': None,
+                       'meta': {
+                           'msg': 'fail',
+                           'status': 400
+                       }})
+
+
 @app.route('/api/users/<uid>/state/<stateType>', methods=['PUT'])
 def changeUserState(uid, stateType):
     print(uid, stateType)
@@ -249,17 +333,17 @@ def changeUserState(uid, stateType):
                 'data': user,
                 'meta': {
                     'msg': 'change user state success',
-                    'state': 200
+                    'status': 200
                 }
             })
     return json.dumps({'data': '',
-                      'meta': {
-                          'msg': 'fail',
-                          'state': 400
-                      }
-    })
+                       'meta': {
+                           'msg': 'fail',
+                           'status': 400
+                       }
+                       })
 
 
 if __name__ == '__main__':
-    app.debug = False  # 设置调试模式，生产模式的时候要关掉debug
+    app.debug = True  # 设置调试模式，生产模式的时候要关掉debug
     app.run(host='0.0.0.0', port=8000)
