@@ -83,7 +83,7 @@ export default {
   methods: {
     // 点击重置按钮, 重置表单内容
     resetLoginForm () {
-      console.log(this)
+      // console.log(this)
       this.$refs.loginFormRef.resetFields()
     },
     login () {

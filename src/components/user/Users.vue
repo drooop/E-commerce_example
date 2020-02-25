@@ -329,29 +329,29 @@ export default {
       }
       this.userList = res.data.users
       this.total = res.data.total
-      console.log(res)
+      // console.log(res)
     },
     // 监听 pagesize 改变事件, 传递将要更新到的显示条目数
     handleSizeChange (newSize) {
-      console.log(newSize)
+      // console.log(newSize)
       this.queryInfo.pagesize = newSize
       this.getUserList()
     },
     // 监听 page 改变事件, 传递将要更新到的页码数
     handleCurrentChange (newPage) {
-      console.log(newPage)
+      // console.log(newPage)
       this.queryInfo.pagenum = newPage
       this.getUserList()
     },
     async userStateChanged (userinfo) {
-      console.log(userinfo)
+      // console.log(userinfo)
       const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
       if (res.meta.state !== 200) {
         userinfo.mg_state = !userinfo.mg_state
         return this.$message.error('更新用户状态失败')
       }
       this.$message('更新用户状态成功')
-      console.log(res)
+      // console.log(res)
     },
     addFormClosed () {
       this.$refs.addFormRef.resetFields()
@@ -360,7 +360,7 @@ export default {
       this.$refs.addFormRef.validate(async valid => {
         // 如果预校验失败,直接返回
         if (!valid) return
-        console.log(this.addForm)
+        // console.log(this.addForm)
         // 可以发起添加用户的请求
         const { data: res } = await this.$http.post('users', this.addForm)
         if (res.meta.status !== 201) {

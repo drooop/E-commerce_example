@@ -191,6 +191,128 @@ userList = [
     }
 ]
 
+rightsList = [
+    {
+        'id': 101,
+        'authName': '模型管理',
+        'level': '0',
+        'pid': 0,
+        'path': 'models'
+    },
+    {
+        'id': 102,
+        'authName': '订单管理',
+        'level': '0',
+        'pid': 1,
+        'path': 'orders'
+    },
+    {
+        'id': 103,
+        'authName': '权限管理',
+        'level': '0',
+        'pid': 2,
+        'path': 'rights'
+    },
+    {
+        'id': 104,
+        'authName': '模型列表',
+        'level': '1',
+        'pid': 3,
+        'path': 'models'
+    },
+    {
+        'id': 105,
+        'authName': '添加模型',
+        'level': '2',
+        'pid': 3,
+        'path': 'models'
+    },
+    {
+        'id': 106,
+        'authName': '订单列表',
+        'level': '2',
+        'pid': 1,
+        'path': 'orders'
+    },
+    {
+        'id': 107,
+        'authName': '添加订单',
+        'level': '3',
+        'pid': 2,
+        'path': 'orders'
+    },
+    {
+        'id': 108,
+        'authName': '用户列表',
+        'level': '1',
+        'pid': 3,
+        'path': 'users'
+    },
+    {
+        'id': 109,
+        'authName': '角色列表',
+        'level': '1',
+        'pid': 3,
+        'path': 'roles'
+    },
+    {
+        'id': 110,
+        'authName': '权限列表',
+        'level': '1',
+        'pid': 3,
+        'path': 'rights'
+    },
+    {
+        'id': 111,
+        'authName': '分类参数',
+        'level': '1',
+        'pid': 3,
+        'path': 'params'
+    },
+    {
+        'id': 112,
+        'authName': '模型修改',
+        'level': '2',
+        'pid': 3,
+        'path': 'models'
+    }
+]
+
+rightsTree = {
+    'id': 1,
+    'authName': '模型管理1',
+    'level': '0',
+    'pid': 0,
+    'children': [
+        {
+            'id': 11,
+            'authName': '模型管理1',
+            'level': '0',
+            'pid': 0,
+            'children': [
+                {
+                    'id': 111,
+                    'authName': '模型管理1',
+                    'level': '0',
+                    'pid': 0
+                },
+                {
+                    'id': 112,
+                    'authName': '模型管理1',
+                    'level': '0',
+                    'pid': 0
+                },
+            ]
+        },
+        {
+            'id': 12,
+            'authName': '模型管理1',
+            'level': '0',
+            'pid': 0
+        },
+    ]
+},
+
 
 @app.route('/')
 def index():
@@ -332,6 +454,37 @@ def changeUserState(uid, stateType):
                            'status': 400
                        }
                        })
+
+
+@app.route('/api/rights/<string:viewType>', methods=['GET'])
+def getRightsList(viewType):
+    print(viewType)
+    if viewType == 'list':
+        res = {
+            'data': rightsList,
+            'meta': {
+                'msg': '获取权限列表成功',
+                'status': 200
+            }
+        }
+        return json.dumps(res)
+    elif viewType == 'tree':
+        res = {
+            'data': rightsTree,
+            'meta': {
+                'msg': '获取权限列表成功',
+                'status': 200
+            }
+        }
+        return json.dumps(res)
+    else:
+        return {
+            'data': {},
+            'meta': {
+                'msg': 'param not allowed',
+                'status': 400
+            }
+        }
 
 
 if __name__ == '__main__':
