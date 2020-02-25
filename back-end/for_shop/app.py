@@ -313,6 +313,113 @@ rightsTree = {
     ]
 },
 
+rolesList = [
+    {
+        'id': 1,
+        'roleName': '主管',
+        'roleDesc': '技术负责人',
+        'children': [
+            {
+                'id': 11,
+                'authName': '模型管理',
+                'path': 'null',
+                'children': [
+                    {
+                        'id': 111,
+                        'authName': '模型列表',
+                        'path': 'null',
+                        'children': [
+                            {
+                                'id': 1111,
+                                'authName': '添加模型',
+                                'path': 'null'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+        {
+        'id': 2,
+        'roleName': '测试角色',
+        'roleDesc': '测试角色描述',
+        'children': [
+            {
+                'id': 21,
+                'authName': '模型管理',
+                'path': 'null',
+                'children': [
+                    {
+                        'id': 211,
+                        'authName': '模型列表',
+                        'path': 'null',
+                        'children': [
+                            {
+                                'id': 2111,
+                                'authName': '添加模型',
+                                'path': 'null'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+        {
+        'id': 3,
+        'roleName': '测试角色2',
+        'roleDesc': '测试角色描述2',
+        'children': [
+            {
+                'id': 31,
+                'authName': '模型管理',
+                'path': 'null',
+                'children': [
+                    {
+                        'id': 311,
+                        'authName': '模型列表',
+                        'path': 'null',
+                        'children': [
+                            {
+                                'id': 3111,
+                                'authName': '添加模型',
+                                'path': 'null'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+        {
+        'id': 4,
+        'roleName': 'drop',
+        'roleDesc': 'dropdrop',
+        'children': [
+            {
+                'id': 41,
+                'authName': '模型管理',
+                'path': 'null',
+                'children': [
+                    {
+                        'id': 411,
+                        'authName': '模型列表',
+                        'path': 'null',
+                        'children': [
+                            {
+                                'id': 4111,
+                                'authName': '添加模型',
+                                'path': 'null'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
+
 
 @app.route('/')
 def index():
@@ -485,6 +592,28 @@ def getRightsList(viewType):
                 'status': 400
             }
         }
+
+
+@app.route('/api/roles', methods=['GET'])
+def getRolesList():
+    if request.method == "GET":
+        res = {
+            'data': rolesList,
+            'meta': {
+                'msg': '获取角色列表成功',
+                'status': 200
+            }
+        }
+        return json.dumps(res)
+    else:
+        res = {
+            'data': {},
+            'meta': {
+                'msg': 'method not allowed',
+                'status': 400
+            }
+        }
+        return json.dumps(res)
 
 
 if __name__ == '__main__':
